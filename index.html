@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quicknote</title>
+  <style>
+    #text {
+      position: fixed;
+      bottom: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 100px 25%;
+      font: 18px normal 'Helvetica Neue';
+    }
+    #text:focus {
+      outline: none;
+    }
+    *.bold {font-weight: bold;}
+    *.italic {font-style: italic;}
+  </style>
+</head>
+<body>
+  <div id="text" class="mousetrap" contenteditable="true"></div>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="jquery.hotkeys.js"></script>
+  <script src="rangy-1.2.3/rangy-core.js"></script>
+  <script src="rangy-1.2.3/rangy-cssclassapplier.js"></script>
+  <script>
+    rangy.init();
+    var cssClassApplierModule = rangy.modules.CssClassApplier;
+
+    // Retrieve document contents from localstorage if anything is there
+    if (localStorage['text'] !== undefined) {
+      document.getElementById('text').innerHTML = localStorage['text'];
+    }
+    
+    // Save to localstorage on keyup
+    $('body').on('keyup', function(e){
+      localStorage['text'] = document.getElementById('text').innerHTML;
+    });
+
+    // Bold
+    boldApplier = rangy.createCssClassApplier("bold");
+    Mousetrap.bind(['command+b', 'ctrl+b'], function(e) {
+      boldApplier.toggleSelection();
+    });
+
+    // Italics
+    italicApplier = rangy.createCssClassApplier("italic");
+    Mousetrap.bind(['command+i', 'ctrl+i'], function(e) {
+      italicApplier.toggleSelection();
+    });
+    
+
+  </script>
+</body>
+</html>
